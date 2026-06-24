@@ -65,3 +65,20 @@ Après l'exécution de la commande "php artisan migrate", une seule table a ét�
 Avec la commande "php artisan migrate:rollback" la table a été supprimée 
 
 En tapant à nouveau la commande "php artisan migrate", la table est recréée
+
+******************exercice 5******************
+Scénario 1 — Modification d'une variable dans fichier .env , mais Laravel semble encore utiliser l'ancienne valeur.
+la cause : le cache de configuration est actif. Laravel ne relit pas le fichier .env à chaque requête pour des raisons de performance.
+la commande : "php artisan config:clear" permet de recréer le cache  
+
+Scénario 2 — Ajout d'une nouvelle route dans routes/web.php, mais Laravel retourne une erreur 404.
+la cause : Les routes de l'application ont été mises en cache
+la commande à utiliser : php artisan route:clear
+
+Scénario 3 — Retour sur un projet après plusieurs jours. Rien ne semble fonctionner normalement 
+Quelles sont les coommandes à lancer (dans l'ordre) ?
+les commandes à lancer sont : 
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear

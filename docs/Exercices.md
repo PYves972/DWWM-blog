@@ -1,0 +1,84 @@
+**\*\*\*\***\*\***\*\*\*\***exercice 1**\*\*\*\***\*\***\*\*\*\***
+Lorsque je lance la commande "php artisan", il s'affiche la version de Laravel, la syntaxe d'utilisation globale, les options globales, ainsi que la liste complète de toutes les commandes disponibles classées par familles. C'est une sorte d'aide-mémoire qui permet de retrouver le nom exact d'une commande ou d'explorer les fonctionnalités du CLI quand on en a besoin.
+Exemples de familles de commandes : make: (génération de squelettes de code) ; migrate: (gestion des migrations et de la base de données) ; route: (gestion et affichage des routes du projet)
+La commande "php artisan make:model --help" affiche toutes les options disponibles pour make:model. L'option -m permet de générer automatiquement le fichier de migration qui est associé au modèle. La commande à taper pour voir l'ensemble des routes définies dans un projet est : php artisan route:list : List all registered routes
+
+**\*\*\*\***\*\***\*\*\*\***exercice 2**\*\*\*\***\*\***\*\*\*\***
+Ce qui s'affiche lorsque je lance la commande pour démarrer le serveur :
+PS C:\dev\dwwm-blog> php artisan serve
+
+INFO Server running on [http://127.0.0.1:8000].
+
+Press Ctrl+C to stop the server
+
+Dans mon navigateur, j'arrive sur la page d'accueil Laravel
+Chaque fois que je rafraichis la page dans le navigateur, la date et l'heure sont actualisées dans le terminal.
+
+Il n'est pas possible de taper d'autres commandes dans le terminal pendant que le serveur tourne.
+La solution est d'ouvrir un autre terminal en parallèle.
+Pour arrêter le serveur, il faut faire Ctrl+C
+
+**\*\*\*\***\*\***\*\*\*\***exercice 3**\*\*\*\***\*\***\*\*\*\***
+Observation :
+le fichier Article.php se trouve dans le dossier app/models/
+le fichier ArticleController.php est créé dans app/Http/Controllers/
+le fichier Article.php contient par défaut un namespace :
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Article extends Model
+{
+    //
+}
+
+Artisan génère ce code "boilerplate" pour que le modèle soit immédiatement fonctionnel. Cela évite d’avoir à écrire manuellement la structure de base à chaque fois.
+
+Le namespace App\Models permet d'éviter les conflits de nom de classes.
+
+******************exercice 4******************
+PARTIE A
+C'est la commande "artisan migrate" qui permet d'exécuter toutes les migrations 
+
+La commande "php artisan migrate:rollback" permet d'annuler uniquement la dernière migration exécutée 
+
+migrate:rollback annule uniquement la dernière série de migrations. Les autres restent.
+migrate:fresh supprime toutes les tables.
+
+php artisan migrate:fresh --seed recrée toutes les tables et peuple la base avec les seeders en une seule étape
+
+PARTIE B
+Scénario 1 (Développement, ajout de colonne) :
+Ne pas modifier la migration, mais créer une nouvelle migration pour ajouter la colonne :
+php artisan make:migration add_slug_to_articles_table
+
+Scénario 2 : (Proposition en production)
+lancer la commande "php artisan migrate:fresh --seed" risque de supprimer définitivement toutes les tables de la base de données de production, et effacer les données du blog. 
+la solution : "php artisan migrate" pour appliquer les nouveautés sans toucher aux données existantes.
+
+PARTIE C 
+Après l'exécution de la commande "php artisan migrate", une seule table a été créée : 2026_06_24_130150_create_categories_table ............................................. 136.71ms DONE
+
+Avec la commande "php artisan migrate:rollback" la table a été supprimée 
+
+En tapant à nouveau la commande "php artisan migrate", la table est recréée
+
+******************exercice 5******************
+Scénario 1 — Modification d'une variable dans fichier .env , mais Laravel semble encore utiliser l'ancienne valeur.
+la cause : le cache de configuration est actif. Laravel ne relit pas le fichier .env à chaque requête pour des raisons de performance.
+la commande : "php artisan config:clear" permet de recréer le cache  
+
+Scénario 2 — Ajout d'une nouvelle route dans routes/web.php, mais Laravel retourne une erreur 404.
+la cause : Les routes de l'application ont été mises en cache
+la commande à utiliser : php artisan route:clear
+
+Scénario 3 — Retour sur un projet après plusieurs jours. Rien ne semble fonctionner normalement 
+Quelles sont les coommandes à lancer (dans l'ordre) ?
+les commandes à lancer sont : 
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear

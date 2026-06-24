@@ -17,3 +17,5 @@ Chaque fois que je rafraichis la page dans le navigateur, la date et l'heure son
 Il n'est pas possible de taper d'autres commandes dans le terminal pendant que le serveur tourne.
 La solution est d'ouvrir un autre terminal en parallèle.
 Pour arrêter le serveur, il faut faire Ctrl+C
+
+********\*\*********exercice 3********\*\*********

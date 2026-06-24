@@ -18,4 +18,23 @@ Il n'est pas possible de taper d'autres commandes dans le terminal pendant que l
 La solution est d'ouvrir un autre terminal en parallèle.
 Pour arrêter le serveur, il faut faire Ctrl+C
 
-********\*\*********exercice 3********\*\*********
+**\*\*\*\***\*\***\*\*\*\***exercice 3**\*\*\*\***\*\***\*\*\*\***
+Observation :
+le fichier Article.php se trouve dans le dossier app/models/
+le fichier ArticleController.php est créé dans app/Http/Controllers/
+le fichier Article.php contient par défaut un namespace :
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Article extends Model
+{
+    //
+}
+
+Artisan génère ce code "boilerplate" pour que le modèle soit immédiatement fonctionnel. Cela évite d’avoir à écrire manuellement la structure de base à chaque fois.
+
+Le namespace App\Models permet d'éviter les conflits de nom de classes.

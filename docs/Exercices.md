@@ -38,3 +38,13 @@ class Article extends Model
 Artisan génère ce code "boilerplate" pour que le modèle soit immédiatement fonctionnel. Cela évite d’avoir à écrire manuellement la structure de base à chaque fois.
 
 Le namespace App\Models permet d'éviter les conflits de nom de classes.
+
+******************exercice 4******************
+C'est la commande "artisan migrate" qui permet d'exécuter toutes les migrations 
+
+La commande "php artisan migrate:rollback" permet d'annuler uniquement la dernière migration exécutée 
+
+migrate:rollback annule uniquement la dernière série de migrations. Les autres restent.
+migrate:fresh supprime toutes les tables.
+
+php artisan migrate:fresh --seed recrée toutes les tables et peuple la base avec les seeders en une seule étape

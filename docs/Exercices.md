@@ -40,6 +40,7 @@ Artisan génère ce code "boilerplate" pour que le modèle soit immédiatement f
 Le namespace App\Models permet d'éviter les conflits de nom de classes.
 
 ******************exercice 4******************
+PARTIE A
 C'est la commande "artisan migrate" qui permet d'exécuter toutes les migrations 
 
 La commande "php artisan migrate:rollback" permet d'annuler uniquement la dernière migration exécutée 
@@ -48,3 +49,19 @@ migrate:rollback annule uniquement la dernière série de migrations. Les autres
 migrate:fresh supprime toutes les tables.
 
 php artisan migrate:fresh --seed recrée toutes les tables et peuple la base avec les seeders en une seule étape
+
+PARTIE B
+Scénario 1 (Développement, ajout de colonne) :
+Ne pas modifier la migration, mais créer une nouvelle migration pour ajouter la colonne :
+php artisan make:migration add_slug_to_articles_table
+
+Scénario 2 : (Proposition en production)
+lancer la commande "php artisan migrate:fresh --seed" risque de supprimer définitivement toutes les tables de la base de données de production, et effacer les données du blog. 
+la solution : "php artisan migrate" pour appliquer les nouveautés sans toucher aux données existantes.
+
+PARTIE C 
+Après l'exécution de la commande "php artisan migrate", une seule table a été créée : 2026_06_24_130150_create_categories_table ............................................. 136.71ms DONE
+
+Avec la commande "php artisan migrate:rollback" la table a été supprimée 
+
+En tapant à nouveau la commande "php artisan migrate", la table est recréée

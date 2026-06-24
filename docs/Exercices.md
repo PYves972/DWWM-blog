@@ -1,0 +1,1 @@
+Lorsque je lance la commande "php artisan", il s'affiche la version de Laravel, la syntaxe d'utilisation globale, les options globales, ainsi que la liste complète de toutes les commandes disponibles classées par familles. C'est une sorte d'aide-mémoire qui permet de retrouver le nom exact d'une commande ou d'explorer les fonctionnalités du CLI quand on en a besoin.

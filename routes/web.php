@@ -6,4 +6,4 @@ use App\Http\Controllers\ArticleController;
 Route::get('/', function () {
     return view('home');
 });
-Route::get('/articles', [ArticleController::class, 'show']);
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

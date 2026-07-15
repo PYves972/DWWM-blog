@@ -15,13 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Génère 5 catégories fictives
+        \App\Models\Category::factory(5)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-       $this->call([
+        // Appelle le seeder des articles
+        $this->call([
             ArticleSeeder::class,
         ]);
     }

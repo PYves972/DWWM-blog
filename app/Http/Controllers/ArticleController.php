@@ -15,9 +15,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::where('status', 'published')
-            ->latest()
-            ->paginate(10);
+$articles = Article::with(['category', 'user']) // <-- Ajout recommandé
+        ->where('status', 'published')
+        ->latest()
+        ->paginate(10);
 
         return view('articles.index', compact('articles'));
     }

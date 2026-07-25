@@ -22,16 +22,19 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
-        return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-        ];
-    }
+public function definition(): array
+{
+    $title = fake()->sentence();
+
+    return [
+        'title'       => $title,                            // <-- au lieu de 'titre'
+        'slug'        => \Illuminate\Support\Str::slug($title),
+        'content'     => fake()->paragraphs(3, true),       // <-- au lieu de 'contenu'
+        'status'      => 'published',                      // <-- au lieu de 'statut'
+        'category_id' => \App\Models\Category::factory(),  // ou un ID existant
+        'user_id'     => \App\Models\User::factory(),      // ou un ID existant
+    ];
+}
 
     /**
      * Indicate that the model's email address should be unverified.

@@ -11,32 +11,40 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Utilisateur
-        $user = User::create([
-            'firstname' => 'Jean',
-            'lastname'  => 'Dupont',
-            'email'     => 'admin@blog.fr',
-            'password'  => bcrypt('password'),
-            'role'      => 'admin',
-        ]);
+        // 1. Création / Récupération de l'Admin
+        $user = User::firstOrCreate(
+            ['email' => 'admin@blog.fr'],
+            [
+                'firstname' => 'Jean',
+                'lastname'  => 'Dupont',
+                'password'  => bcrypt('password'),
+                'role'      => 'admin',
+            ]
+        );
 
-        // 2. Catégorie
-        $category = Category::create([
-            'name' => 'Technologie',
-            'slug' => 'technologie',
-        ]);
+        // 2. Création de 4 catégories
+        $categories = collect(['Technologie', 'Design', 'Tutoriels', 'Actualités'])->map(function ($name) {
+            return Category::firstOrCreate(
+                ['slug' => \Illuminate\Support\Str::slug($name)],
+                ['name' => $name]
+            );
+        });
 
-        // 3. Article (avec les 4 colonnes réclamées par la BDD)
-        Article::create([
-            'title'        => 'Mon premier article sur Laravel',
-            'slug'         => 'mon-premier-article-sur-laravel',
-            'content'      => 'Voici le contenu de mon super premier article de blog !',
-            'status'       => 'published',
-            'published_at' => now(),
-            'id_category'  => $category->id,
-            'category_id'  => $category->id, // <- Ajout indispensable
-            'id_user'      => $user->id,
-            'user_id'      => $user->id,
-        ]);
+        // 3. Génération directe de 20 articles en base de données
+        foreach (range(1, 20) as $i) {
+            $category = $categories->random();
+
+            Article::create([
+                'title'        => fake()->unique()->sentence(4),
+                'slug'         => fake()->unique()->slug(),
+                'content'      => fake()->paragraphs(3, true),
+                'status'       => 'published',
+                'published_at' => now(),
+                'category_id'  => $category->id,
+                'id_category'  => $category->id, // Doublon
+                'user_id'      => $user->id,
+                'id_user'      => $user->id,     // Doublon
+            ]);
+        }
     }
 }

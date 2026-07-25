@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string("titre",255);
-            $table->string("slug",255)->unique();
-            $table->longText("contenu");
-            $table->enum("statut", ['draft', 'published'])->default("draft");
-            $table->timestamp("date_publication")->nullable();
-            $table->timestamps();
-        });
+  Schema::create('articles', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->string('slug', 100)->unique(); //[cite: 1]
+    $table->text('content');
+    $table->enum('status', ['draft', 'published'])->default('draft'); //[cite: 1]
+    $table->foreignId('id_category')->constrained('categories')->onDelete('cascade'); //[cite: 1]
+    $table->foreignId('id_user')->constrained('users')->onDelete('cascade'); //[cite: 1]
+    $table->timestamp('published_at')->nullable(); //[cite: 1]
+    $table->timestamps();
+});
     }
 
     /**

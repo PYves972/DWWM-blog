@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-    use HasFactory; // <-- Placé correctement ici
-
-    protected $fillable = [ // <-- Remplacement du "-" par "="
+    protected $fillable = [
         'name',
         'slug',
     ];
+
 
     public function articles(): HasMany
     {

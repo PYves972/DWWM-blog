@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class Tag extends Model
+{
+    protected $fillable = [
+        'name',
+        'slug',
+    ];
+
+    /**
+     * Les articles associés à ce tag.
+     */
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'articles_tags', 'id_tag', 'id_article');
+    }
+}

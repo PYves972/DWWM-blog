@@ -3,44 +3,114 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
     /**
-     * Vue Visiteur : Liste des articles publiés
+     * Vue publique : Liste des articles publiés
      */
     public function index()
     {
-        // On récupère uniquement les articles publiés, du plus récent au plus ancien
-        // avec le chargement en amont (eager loading) des relations pour éviter le problème de requêtes N+1
-        $articles = Article::with('category')
-            ->where('statut', 'published')
+        $articles = Article::where('status', 'published')
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('articles.index', compact('articles'));
     }
 
     /**
-     * Vue Admin : Liste de tous les articles (brouillons inclus)
+     * Vue publique : Afficher un article par son slug
      */
-   public function adminIndex()
-{
-    // On ajoute 'category' pour pouvoir afficher la catégorie de chaque article côté admin
-    $articles = Article::with('category')->latest()->get();
-
-    return view('admin.articles-list', compact('articles'));
-}
     public function show($slug)
-{
-    // On cherche l'article qui a ce slug ET qui est publié
-    $article = Article::with('category', 'user')
-        ->where('slug', $slug)
-        ->where('statut', 'published')
-        ->firstOrFail(); // Renvoie une erreur 404 si l'article n'existe pas
+    {
+        $article = Article::where('slug', $slug)->firstOrFail();
 
-    return view('articles.show', compact('article'));
-}
-}
+        return view('articles.show', compact('article'));
+    }
 
+    /**
+     * Admin : Liste de TOUS les articles
+     */
+    public function adminIndex()
+    {
+        $articles = Article::with(['category', 'user'])->latest()->paginate(10);
+
+        return view('admin.articles.index', compact('articles'));
+    }
+
+    /**
+     * Admin : Formulaire de création
+     */
+    public function create()
+    {
+        $categories = Category::all();
+
+        return view('admin.articles.create', compact('categories'));
+    }
+
+    /**
+     * Admin : Enregistrement d'un nouvel article
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'content'     => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'status'      => 'required|in:draft,published',
+        ]);
+
+        $validated['slug'] = Str::slug($request->title);
+        $validated['user_id'] = Auth::id() ?? 1;
+
+        Article::create($validated);
+
+        return redirect()->route('admin.articles.index')
+            ->with('success', 'Article créé avec succès !');
+    }
+
+    /**
+     * Admin : Formulaire d'édition d'un article
+     */
+    public function edit(Article $article)
+    {
+        $categories = Category::all();
+
+        return view('admin.articles.edit', compact('article', 'categories'));
+    }
+
+    /**
+     * Admin : Mettre à jour un article
+     */
+    public function update(Request $request, Article $article)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'content'     => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'status'      => 'required|in:draft,published',
+        ]);
+
+        $validated['slug'] = Str::slug($request->title);
+
+        $article->update($validated);
+
+        return redirect()->route('admin.articles.index')
+            ->with('success', 'Article mis à jour avec succès !');
+    }
+
+    /**
+     * Admin : Supprimer un article
+     */
+    public function destroy(Article $article)
+    {
+        $article->delete();
+
+        return redirect()->route('admin.articles.index')
+            ->with('success', 'Article supprimé avec succès !');
+    }
+}

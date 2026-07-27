@@ -19,17 +19,29 @@
         @endif
 
         <!-- En-tête de la page -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestion des Articles</h1>
-                <p class="text-slate-500 text-sm mt-1">Espace d'administration du blog</p>
-            </div>
+<div class="flex justify-between items-center mb-6">
+    <div>
+        <h1 class="text-2xl font-bold">Gestion des Articles</h1>
+        <p class="text-gray-500">Espace d'administration du blog</p>
+    </div>
 
-            <!-- LIEN ACTIF : Nouvel Article -->
-            <a href="{{ route('admin.articles.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-lg text-sm shadow-sm transition inline-flex items-center gap-2">
-                <span>+</span> Nouvel Article
-            </a>
-        </div>
+    <div class="flex items-center gap-4">
+        {{-- Bouton de déconnexion --}}
+        @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition">
+                    🚪 Se déconnecter
+                </button>
+            </form>
+        @endauth
+
+        {{-- Bouton créer un article --}}
+        <a href="{{ route('admin.articles.create') }}" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
+            + Nouvel Article
+        </a>
+    </div>
+</div>
 
         <!-- Tableau -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">

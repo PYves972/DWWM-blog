@@ -13,8 +13,10 @@ class ArticleController extends Controller
     /**
      * Vue publique : Liste des articles publiés
      */
-    public function index()
+    public function index(Request $request)
     {
+$categoryId = $request->query('category');
+
 $articles = Article::with(['category', 'user']) // <-- Ajout recommandé
         ->where('status', 'published')
         ->latest()

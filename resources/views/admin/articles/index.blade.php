@@ -13,9 +13,9 @@
                 <h1 class="text-3xl font-bold text-gray-900">Gestion des Articles</h1>
                 <p class="text-sm text-gray-500">Espace d'administration du blog</p>
             </div>
-            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow transition">
-                + Nouvel Article
-            </a>
+            <a href="{{ route('admin.articles.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow transition">
+    + Nouvel Article
+</a>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -41,7 +41,7 @@
                                 </span>
                             </td>
                             <td class="py-3 px-4 text-gray-600">
-                                {{ $article->user ? $article->user->firstname : 'Inconnu' }}
+                                {{ $article->user->firstname }} {{ $article->user->lastname }}
                             </td>
                             <td class="py-3 px-4">
                                 @if($article->status === 'published')
@@ -51,8 +51,7 @@
                                 @endif
                             </td>
                             <td class="py-3 px-4 text-right space-x-2">
-                                <a href="{{ route('articles.show', $article->slug) }}" class="text-blue-600 hover:text-blue-900 font-semibold text-xs" target="_blank">Voir</a>
-                                <a href="#" class="text-amber-600 hover:text-amber-900 font-semibold text-xs">Éditer</a>
+                                <a href="{{ route('admin.articles.edit', $article) }}" class="text-amber-600 hover:text-amber-900 font-semibold text-xs">Éditer</a>
                             </td>
                         </tr>
                     @empty

@@ -31,12 +31,7 @@
             <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 @yield('content', $slot ?? '')
             </main>
-            <form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button type="submit" style="background: none; border: none; color: red; text-decoration: underline; cursor: pointer;">
-        🚪 Se déconnecter
-    </button>
-</form>
+
         </div>
     </body>
 </html>
